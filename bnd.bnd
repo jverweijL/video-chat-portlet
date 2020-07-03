@@ -1,0 +1,4 @@
+Bundle-Name: video-chat-portlet
+Bundle-SymbolicName: com.liferay.demo.react.video
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.demo.react.video.constants

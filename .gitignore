@@ -1,0 +1,6 @@
+.gradle/
+.sass-cache/
+build/
+target/
+node_modules/
+bin/
