@@ -36,7 +36,7 @@ function VideoChat() {
     const socket = useRef();
 
     useEffect(() => {
-        socket.current = io.connect("http://localhost:8000");
+        socket.current = io.connect("liferay-demo.ddns.net/");
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             setStream(stream);
             if (userVideo.current) {
@@ -161,7 +161,7 @@ function VideoChat() {
             <Row>
                 {incomingCall}
             </Row>
-            <div>v 0.10</div>
+            <div>v 0.19</div>
         </Container>
     );
 }
