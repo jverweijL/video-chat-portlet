@@ -19,7 +19,6 @@ const Row = styled.div`
 const Video = styled.video`
   border: 1px solid blue;
   width: 50%;
-  height: 50%;
 `;
 
 function VideoChat() {
@@ -35,8 +34,11 @@ function VideoChat() {
     const partnerVideo = useRef();
     const socket = useRef();
 
+    let peer;
+
+
     useEffect(() => {
-        socket.current = io.connect("liferay-demo.ddns.net/");
+        socket.current = io.connect("localhost:8000/");
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             setStream(stream);
             if (userVideo.current) {
@@ -61,7 +63,7 @@ function VideoChat() {
 
 
     function callPeer(id) {
-        const peer = new Peer({
+        peer = new Peer({
             initiator: true,
             trickle: false,
             config: {
@@ -101,7 +103,7 @@ function VideoChat() {
 
     function acceptCall() {
         setCallAccepted(true);
-        const peer = new Peer({
+        peer = new Peer({
             initiator: false,
             trickle: false,
             stream: stream,
@@ -115,6 +117,11 @@ function VideoChat() {
         });
 
         peer.signal(callerSignal);
+    }
+
+    function disconnectCall() {
+        setCallAccepted(false);
+        peer.destroy();
     }
 
 
@@ -142,6 +149,15 @@ function VideoChat() {
         )
     }
 
+    let hangupCall;
+    if (callAccepted) {
+        hangupCall = (
+            <div>
+                <button onClick={disconnectCall}>Hangup</button>
+            </div>
+        )
+    }
+
     return (
         <Container>
             <Row>
@@ -161,7 +177,10 @@ function VideoChat() {
             <Row>
                 {incomingCall}
             </Row>
-            <div>v 0.19</div>
+            <Row>
+                {hangupCall}
+            </Row>
+            <div>v 0.23</div>
         </Container>
     );
 }
